@@ -4,6 +4,7 @@
  */
 package audio;
 
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.*;
 import org.lwjgl.stb.STBVorbisInfo;
@@ -41,16 +42,14 @@ public final class AudioMain {
 		ping.setLooping(true);
 		ping.play();
 		
-		float[] pos = new float[3];
+		Vector3f pos = new Vector3f();
 		for (int n = 0; n < 1000; n++) {
 			int degrees = 15 * n % 360;
 			System.out.println(degrees);
 			double ang = degrees / 180.0 * Math.PI;
 			float distance = 3;
-			float px = (float) (distance * Math.sin(ang));
-			float pz = (float) (distance * Math.cos(ang));
-			pos[0] = px;
-			pos[2] = pz;
+			pos.x = (float) (distance * Math.sin(ang));
+			pos.z = (float) (distance * Math.cos(ang));
 			ping.setPosition(pos);
 			try {
 				Thread.sleep(1000);

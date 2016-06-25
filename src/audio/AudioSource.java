@@ -4,16 +4,17 @@ import static org.lwjgl.openal.AL10.*;
 
 import java.nio.ShortBuffer;
 
+import org.joml.Vector3f;
 import org.lwjgl.stb.STBVorbisInfo;
 
 public class AudioSource {
 	private int buffer;
 	private int source;
 	private boolean looping;
-	private float[] position;
-	private float[] velocity;
+	private Vector3f position;
+	private Vector3f velocity;
 
-	public AudioSource(int buffer, int source, boolean looping, float[] position, float[] velocity) {
+	public AudioSource(int buffer, int source, boolean looping, Vector3f position, Vector3f velocity) {
 		this.buffer = buffer;
 		this.source = source;
 		setLooping(looping);
@@ -40,7 +41,7 @@ public class AudioSource {
 	}
 
 	public static AudioSource createEmpty() {
-		return new AudioSource(alGenBuffers(), alGenSources(), false, new float[] { 0, 0, 0 }, new float[] { 0, 0, 0 });
+		return new AudioSource(alGenBuffers(), alGenSources(), false, new Vector3f(), new Vector3f());
 	}
 	
 	public void updateBuffer() {
@@ -73,21 +74,21 @@ public class AudioSource {
 		alDeleteBuffers(buffer);
 	}
 
-	public float[] getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
-	public void setPosition(float[] position) {
+	public void setPosition(Vector3f position) {
 		this.position = position;
-		alSource3f(source, AL_POSITION, position[0], position[1], position[2]);
+		alSource3f(source, AL_POSITION, position.x, position.y, position.z);
 	}
 
-	public float[] getVelocity() {
+	public Vector3f getVelocity() {
 		return velocity;
 	}
 
-	public void setVelocity(float[] velocity) {
+	public void setVelocity(Vector3f velocity) {
 		this.velocity = velocity;
-		alSource3f(source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
+		alSource3f(source, AL_VELOCITY, velocity.x, velocity.y, velocity.z);
 	}
 }

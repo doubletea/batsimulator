@@ -8,20 +8,21 @@ import static org.lwjgl.openal.AL10.alListenerfv;
 
 import java.nio.FloatBuffer;
 
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 public class AudioListener {
-	private float[] velocity;
-	private float[] position;
-	private float[] facing;
-	private float[] up;
+	private Vector3f velocity;
+	private Vector3f position;
+	private Vector3f facing;
+	private Vector3f up;
 	private FloatBuffer orientation;
 
 	public AudioListener() {
-		this(new float[] { 0, 0, 0 }, new float[] { 0, 0, 0 }, new float[] { 0, 0, -1}, new float[]{0, 1, 0 });
+		this(new Vector3f(), new Vector3f(), new Vector3f(0, 0, -1), new Vector3f(0, 1, 0 ));
 	}
 
-	public AudioListener(float[] position, float[] velocity, float[] facing, float[] up) {
+	public AudioListener(Vector3f position, Vector3f velocity, Vector3f facing, Vector3f up) {
 		orientation = BufferUtils.createFloatBuffer(6);
 
 		this.setPosition(position);
@@ -31,45 +32,47 @@ public class AudioListener {
 		updateOrientation();
 	}
 
-	public float[] getVelocity() {
+	public Vector3f getVelocity() {
 		return velocity;
 	}
 
-	public void setVelocity(float[] velocity) {
+	public void setVelocity(Vector3f velocity) {
 		this.velocity = velocity;
-		alListener3f(AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
+		alListener3f(AL_VELOCITY, velocity.x, velocity.y, velocity.z);
 	}
 
-	public float[] getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
-	public void setPosition(float[] position) {
+	public void setPosition(Vector3f position) {
 		this.position = position;
-		alListener3f(AL_POSITION, position[0], position[1], position[2]);
+		alListener3f(AL_POSITION, position.x, position.y, position.z);
 	}
 	
-	public float[] getUp() {
+	public Vector3f getUp() {
 		return up;
 	}
 	
-	public void setUp(float[] up) {
+	public void setUp(Vector3f up) {
 		this.up=up;
 		updateOrientation();
 	}
 	
-	public float[] getFacing() {
+	public Vector3f getFacing() {
 		return facing;
 	}
 
-	public void setFacing(float[] facing) {
+	public void setFacing(Vector3f facing) {
 		this.facing=facing;
 		updateOrientation();
 	}
 	
 	private void updateOrientation() {
 		orientation.rewind();
-		orientation.put(facing).put(up).rewind();
+		facing.get(orientation);
+		up.get(orientation);
+		orientation.rewind();
 		alListenerfv(AL_ORIENTATION, orientation);
 	}
 }
