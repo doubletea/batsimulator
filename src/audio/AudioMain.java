@@ -37,31 +37,11 @@ public final class AudioMain {
 	private static void testPlayback() {
 		AudioListener listener = new AudioListener();
 		
-		// generate buffers and sources
-		int buffer = alGenBuffers();
-		int source = alGenSources();
-		try ( STBVorbisInfo info = STBVorbisInfo.malloc() ) {
-			ShortBuffer pcm = IOUtil.readVorbis("assets/sounds/BatSqueaks.ogg", 32 * 1024, info);
-			//copy to buffer
-			alBufferData(buffer, AL_FORMAT_MONO16, pcm, info.sample_rate());
-		}
-		//set up source input
-		alSourcei(source, AL_BUFFER, buffer);
-		//lets loop the sound
-		alSourcei(source, AL_LOOPING, AL_TRUE);
+		AudioSource ping = AudioSource.createFromOrbis("assets/sounds/submarine.ogg");
+		ping.setLooping(true);
+		ping.play();
 		
-		
-
-		//play source 0
-		alSourcePlay(source);
-
-		//wait 5 secs
-		/*try {
-			System.out.println("Waiting 5 seconds for sound to complete");
-			Thread.sleep(5000);
-		} catch (InterruptedException inte) {
-		}*/
-		
+		float[] pos = new float[3];
 		for (int n = 0; n < 1000; n++) {
 			int degrees = 15 * n % 360;
 			System.out.println(degrees);
@@ -69,19 +49,16 @@ public final class AudioMain {
 			float distance = 3;
 			float px = (float) (distance * Math.sin(ang));
 			float pz = (float) (distance * Math.cos(ang));
-			alSource3f(source, AL_POSITION, px, 0, pz);
+			pos[0] = px;
+			pos[2] = pz;
+			ping.setPosition(pos);
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
 		}
 		
-		//stop source 0
-		alSourceStop(source);
-
-		//delete buffers and sources
-		alDeleteSources(source);
-		alDeleteBuffers(buffer);
+		ping.destroy();
 	}
 
 	
