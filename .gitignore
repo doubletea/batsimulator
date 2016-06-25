@@ -1,0 +1,13 @@
+#eclipse files
+*.classpath
+*.project
+/.settings/*
+/.metadata/*
+
+#build products
+/bin/*
+*.jar
+*.class
+
+#testresources
+/test/*
