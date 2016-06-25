@@ -1,5 +1,7 @@
 package video;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 
@@ -10,6 +12,8 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import org.lwjgl.opengl.GL;
 
+import core.geom.Line;
+
 public class VideoMain {
 	 // The window handle
     private long window;
@@ -17,12 +21,16 @@ public class VideoMain {
     private final int HEIGHT = 320;
     
     private VideoBat bat;
+    private VideoWall wall1;
     
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
  
         try {
         	bat = new VideoBat();
+        	Line w1 = new Line(new Vector2f(-0.8f,-0.8f), new Vector2f(-0.8f,0.8f));
+        	
+        	wall1 = new VideoWall(w1);
         	
             init();
             loop();
@@ -115,18 +123,9 @@ public class VideoMain {
            
         	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-        	bat.draw();
+        	bat.render();
         	
-        	glLoadIdentity();
-        	glColor3f(0, 1, 0);
-        	
-            glBegin(GL_QUADS);
-            glVertex3f(-.9f, -.9f, 0.0f);
-            glVertex3f(-.9f, 0.9f, 0.0f);
-            glVertex3f(-.8f, 0.9f, 0.0f);
-            glVertex3f(-.8f, -.9f, 0.0f);
-            
-            glEnd();
+        	wall1.render();
             
             glColor3f(0, 0, 1);
             glLoadIdentity();
