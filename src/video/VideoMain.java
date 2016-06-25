@@ -13,7 +13,7 @@ public class VideoMain {
 	 // The window handle
     private long window;
 
-    float rtri;
+    float rtri = 0.0f; 
     float dtri = 0.0f; 
     
     public void run() {
@@ -65,9 +65,19 @@ public class VideoMain {
 				if (key == GLFW_KEY_D){
 					dtri += 0.1f;
 				}
+					
 				if (key == GLFW_KEY_A){
 					dtri -= 0.1f;
 				}
+					
+				if (key == GLFW_KEY_Q){
+					rtri += 1f;
+				}
+					
+				if (key == GLFW_KEY_E){
+					rtri -= 1f;
+				}
+					
              }
         	
         	if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
@@ -98,12 +108,14 @@ public class VideoMain {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         GL.createCapabilities();
- 
-        
         
         glClearColor(0, 0, 0, 0);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
+        
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
         
         // Set the clear color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -117,38 +129,43 @@ public class VideoMain {
         	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
         	
         	glColor3f(1, 0, 0);
+        	
         	glLoadIdentity();
-        	
-        	//glTranslatef(0.40f, 0.40f, 0.0f); // move back to focus
-        	//glRotatef(rtri,0.0f,0.0f,1.0f); //  rotate around center
-        	//glTranslatef(-0.40f, -0.40f, -0.0f); //move object to center
-        	
         	glTranslatef(dtri, 0.0f, 0.0f);
         	
+        	//glTranslatef(dtri, 0.0f, 0.0f); // move back to focus
+        	glRotatef(rtri,0.0f,0.0f,1.0f); //  rotate around center
+        	//glTranslatef(-dtri, 0.0f, 0.0f); //move object to center
+        	
+        	
             glBegin(GL_TRIANGLES);
-            glVertex3f(0.45f, 0.45f, 0.0f);
-            glVertex3f(0.40f, 0.40f, 0.0f);
-            glVertex3f(0.50f, 0.40f, 0.0f);
+            
+            glVertex3f(-0.05f, -0.05f, 0.0f);
+            glColor3f(1, 1, 0);
+            glVertex3f(0.0f, 0.05f, 0.0f);
+            glColor3f(1, 0, 0);
+            glVertex3f(0.05f, -0.05f, 0.0f);
             glEnd();
         	
         	glLoadIdentity();
         	glColor3f(0, 1, 0);
         	
             glBegin(GL_QUADS);
-            glVertex3f(0.25f, 0.25f, 0.0f);
-            glVertex3f(0.35f, 0.25f, 0.0f);
-            glVertex3f(0.35f, 0.75f, 0.0f);
-            glVertex3f(0.25f, 0.75f, 0.0f);
+            glVertex3f(-.9f, -.9f, 0.0f);
+            glVertex3f(-.9f, 0.9f, 0.0f);
+            glVertex3f(-.8f, 0.9f, 0.0f);
+            glVertex3f(-.8f, -.9f, 0.0f);
+            
             glEnd();
             
             glColor3f(0, 0, 1);
             glLoadIdentity();
             
             glBegin(GL_QUADS);
-            glVertex3f(0.65f, 0.25f, 0.0f);
-            glVertex3f(0.75f, 0.25f, 0.0f);
-            glVertex3f(0.75f, 0.75f, 0.0f);
-            glVertex3f(0.65f, 0.75f, 0.0f);
+            glVertex3f(.9f, -.9f, 0.0f);
+            glVertex3f(.9f, 0.9f, 0.0f);
+            glVertex3f(.8f, 0.9f, 0.0f);
+            glVertex3f(.8f, -.9f, 0.0f);
             glEnd();
             
             glFlush();
@@ -161,7 +178,7 @@ public class VideoMain {
             // invoked during this call.
             glfwPollEvents();
             
-            rtri+=0.4f;
+            // rtri += 0.4f;
         }
     }
  
