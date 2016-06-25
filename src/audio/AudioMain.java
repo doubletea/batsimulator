@@ -38,7 +38,7 @@ public final class AudioMain {
 	private static void testPlayback() {
 		AudioListener listener = new AudioListener();
 		
-		AudioSource ping = AudioSource.createFromOrbis("assets/sounds/submarine.ogg");
+		AudioSource ping = AudioSource.createFromVorbis("assets/sounds/submarine.ogg");
 		ping.setLooping(true);
 		ping.play();
 		

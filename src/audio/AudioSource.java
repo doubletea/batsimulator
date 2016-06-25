@@ -49,7 +49,7 @@ public class AudioSource {
 
 	}
 
-	public static AudioSource createFromOrbis(String path) {
+	public static AudioSource createFromVorbis(String path) {
 		AudioSource src = createEmpty();
 		try (STBVorbisInfo info = STBVorbisInfo.malloc()) {
 			ShortBuffer pcm = IOUtil.readVorbis(path, 32 * 1024, info);
