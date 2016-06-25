@@ -2,6 +2,7 @@ package video;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -12,14 +13,17 @@ import org.lwjgl.opengl.GL;
 public class VideoMain {
 	 // The window handle
     private long window;
-
-    float rtri = 0.0f; 
-    float dtri = 0.0f; 
+    private final int WIDTH = 320;
+    private final int HEIGHT = 320;
+    
+    private VideoBat bat;
     
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
  
         try {
+        	bat = new VideoBat();
+        	
             init();
             loop();
  
@@ -47,43 +51,12 @@ public class VideoMain {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
  
-        int WIDTH = 320;
-        int HEIGHT = 320;
- 
         // Create the window
-        window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", NULL, NULL);
-        if ( window == NULL )
-            throw new RuntimeException("Failed to create the GLFW window");
- 
+        window = glfwCreateWindow(WIDTH, HEIGHT, "Bat Simulator!", NULL, NULL);
+        if ( window == NULL ){
+        	throw new RuntimeException("Failed to create the GLFW window");
+        }
         
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-        	if (key == GLFW_KEY_UNKNOWN) 
-        		return;
-        	 
-			if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-				if (key == GLFW_KEY_D){
-					dtri += 0.1f;
-				}
-					
-				if (key == GLFW_KEY_A){
-					dtri -= 0.1f;
-				}
-					
-				if (key == GLFW_KEY_Q){
-					rtri += 1f;
-				}
-					
-				if (key == GLFW_KEY_E){
-					rtri -= 1f;
-				}
-					
-             }
-        	
-        	if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
-        });
- 
         // Get the resolution of the primary monitor
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         // Center our window
@@ -93,6 +66,20 @@ public class VideoMain {
             (vidmode.height() - HEIGHT) / 2
         );
  
+     // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+        	if (key == GLFW_KEY_UNKNOWN){
+        		return;
+        	}
+        	if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE ){
+        		glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
+        		return;
+        	}
+                
+        	bat.command(action, key);
+        	
+        });
+        
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
         // Enable v-sync
@@ -127,25 +114,8 @@ public class VideoMain {
         while ( !glfwWindowShouldClose(window) ) {
            
         	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-        	
-        	glColor3f(1, 0, 0);
-        	
-        	glLoadIdentity();
-        	glTranslatef(dtri, 0.0f, 0.0f);
-        	
-        	//glTranslatef(dtri, 0.0f, 0.0f); // move back to focus
-        	glRotatef(rtri,0.0f,0.0f,1.0f); //  rotate around center
-        	//glTranslatef(-dtri, 0.0f, 0.0f); //move object to center
-        	
-        	
-            glBegin(GL_TRIANGLES);
-            
-            glVertex3f(-0.05f, -0.05f, 0.0f);
-            glColor3f(1, 1, 0);
-            glVertex3f(0.0f, 0.05f, 0.0f);
-            glColor3f(1, 0, 0);
-            glVertex3f(0.05f, -0.05f, 0.0f);
-            glEnd();
+
+        	bat.draw();
         	
         	glLoadIdentity();
         	glColor3f(0, 1, 0);
@@ -177,8 +147,6 @@ public class VideoMain {
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
-            
-            // rtri += 0.4f;
         }
     }
  
