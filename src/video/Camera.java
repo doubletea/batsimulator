@@ -77,25 +77,9 @@ public class Camera extends VideoObject{
 
 	@Override
 	protected void coreUpdate(long window, Game game) {
-		DoubleBuffer xpos = BufferUtils.createDoubleBuffer(1);
-		DoubleBuffer ypos = BufferUtils.createDoubleBuffer(1);
-		
-		glfwGetCursorPos(window, xpos, ypos);
-		
-		double xpos1 = xpos.get();
-		double ypos1 = ypos.get();
-		
-		double angle = Math.atan2(xpos1 - MainMain.WIDTH/2,ypos1 - MainMain.HEIGHT/2) - Math.PI;
-		
-		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
-			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.sin(angle),-accel*(float)Math.cos(angle),0f)));
-		}
-		if (glfwGetKey(window, GLFW_KEY_A) != GLFW_RELEASE) {
-			setVelocity(getVelocity().add(new Vector3f((float) (accel*(float)Math.cos(angle - Math.PI/2)), (float) (accel*(float)Math.sin(angle - Math.PI/2)),0f)));
-		}
-		if (glfwGetKey(window, GLFW_KEY_D) != GLFW_RELEASE) {
-			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.cos(angle + Math.PI/2), accel*(float)Math.sin(angle + Math.PI/2),0f)));
-		}
+		Vector3f batPos = game.getVideoBat().getPosition();
+		position.x = -batPos.x;
+		position.y = -batPos.y;
 	}
 
 	@Override
