@@ -22,11 +22,11 @@ public class VideoBat extends VideoObject{
 	protected void coreRender(){
     	glColor3f(1, 0, 0);
         glBegin(GL_TRIANGLES);
-        glVertex3f(-0.05f, -0.05f, 0.0f);
+        glVertex3f(-0.1f, -0.1f, 0.0f);
         glColor3f(1, 1, 0);
-        glVertex3f(0.05f, 0.00f, 0.0f);
+        glVertex3f(0.1f, 0.00f, 0.0f);
         glColor3f(1, 0, 0);
-        glVertex3f(-0.05f, 0.05f, 0.0f);
+        glVertex3f(-0.1f, 0.1f, 0.0f);
         glEnd();
 	}
 

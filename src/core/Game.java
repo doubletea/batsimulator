@@ -17,6 +17,7 @@ import goodaudio.AudioSource;
 import video.Camera;
 import video.VideoBat;
 import video.VideoDot;
+import video.VideoHP;
 import video.VideoObject;
 import video.VideoWall;
 
@@ -25,8 +26,7 @@ public class Game {
 	
 	private VideoBat bat;
 	private long window;
-	private VideoWall wall1;
-	private VideoWall wall2;
+	private VideoHP hp;
 	private ArrayList<VideoWall> walls;
 	private List<Line> lines;
 	private AudioSource ping;
@@ -65,6 +65,8 @@ public class Game {
 		
 		bat = new VideoBat();
 		dot = new VideoDot();
+		
+		hp = new VideoHP();
     	
 		lines = generateRandom();
 		/*
@@ -111,6 +113,7 @@ public class Game {
 	public void update() throws ALException {
 		bat.update(window, this);
 		camera.update(window, this);
+		hp.update(window, this);
 		
 		Vector3f batPos = bat.getPosition();
 		Vector2f bat2DPos = new Vector2f(batPos.x, batPos.y);
@@ -133,6 +136,8 @@ public class Game {
 			if (dot > 0) {
 				bat.setVelocity(bat.getVelocity().sub(xMag * dot * 1.5f, yMag * dot * 1.5f, 0));
 			}
+			
+			hp.getHit();
 		}
 		
 		
@@ -152,6 +157,7 @@ public class Game {
     	}
 		bat.render();
 		dot.render();
+		hp.render();
 	}
 	
 	public void destroy() throws ALException {

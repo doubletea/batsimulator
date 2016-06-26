@@ -26,7 +26,7 @@ public class MainMain {
 	private final int FRAME_RATE = 60;
 	private final double FRAME_DELAY = (long) Math.round(1000.0 / FRAME_RATE);
 	private double timeDeficit;
-	private boolean running;
+	public static boolean running;
 
 
 	// video
