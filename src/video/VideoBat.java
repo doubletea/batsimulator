@@ -23,9 +23,9 @@ public class VideoBat extends VideoObject{
         glBegin(GL_TRIANGLES);
         glVertex3f(-0.05f, -0.05f, 0.0f);
         glColor3f(1, 1, 0);
-        glVertex3f(0.0f, 0.05f, 0.0f);
+        glVertex3f(0.05f, 0.00f, 0.0f);
         glColor3f(1, 0, 0);
-        glVertex3f(0.05f, -0.05f, 0.0f);
+        glVertex3f(-0.05f, 0.05f, 0.0f);
         glEnd();
 	}
 
@@ -42,8 +42,8 @@ public class VideoBat extends VideoObject{
 		double xpos1 = xpos.get();
 		double ypos1 = ypos.get();
 		
-		double angle = Math.atan2(xpos1 - MainMain.WIDTH/2,ypos1 - MainMain.HEIGHT/2);
-		setRotation((float)(Math.toDegrees(angle)-180));
+		double angle = Math.atan2(MainMain.HEIGHT/2 - ypos1, xpos1 - MainMain.WIDTH/2);
+		setRotation((float)(Math.toDegrees(angle)));
 		
 		
 		
