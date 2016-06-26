@@ -5,7 +5,6 @@ import java.util.List;
 import org.joml.Vector2f;
 
 public class CollisionDetector {
-
 	public static Intersection closestPointLine(Vector2f point, List<Line> lines) {
 		float closestDistance = Float.MAX_VALUE;
 		Vector2f closest = new Vector2f();
@@ -18,6 +17,7 @@ public class CollisionDetector {
 			}
 		}
 		inter.distance = closestDistance;
+		
 		inter.intersection.set(closest);
 		return inter;
 	}

@@ -10,6 +10,7 @@ import core.geom.Line;
 public class VideoWall extends VideoObject{
 	private float length;
 	private final float width = 0.15f;
+	private final float height = 0.8f;
 	
 	public VideoWall(){
 		super();
@@ -33,26 +34,26 @@ public class VideoWall extends VideoObject{
         
         glColor3f(1, 0 , 0);
         glBegin(GL_QUADS);
-        glVertex3f(length/2, width/2, position.z + 0.8f);
-        glVertex3f(length/2, -width/2, position.z + 0.8f);
-        glVertex3f(-length/2, -width/2, position.z + 0.8f);
-        glVertex3f(-length/2, width/2, position.z + 0.8f);
+        glVertex3f(length/2, width/2, position.z + height);
+        glVertex3f(length/2, -width/2, position.z + height);
+        glVertex3f(-length/2, -width/2, position.z + height);
+        glVertex3f(-length/2, width/2, position.z + height);
         glEnd();
         
         glColor3f(0, 0, 1);
         glBegin(GL_QUADS);
-        glVertex3f(length/2, width/2, position.z + 0.8f);
+        glVertex3f(length/2, width/2, position.z + height);
         glVertex3f(length/2, width/2, position.z);
         glVertex3f(-length/2, width/2, position.z);
-        glVertex3f(-length/2, width/2, position.z + 0.8f);
+        glVertex3f(-length/2, width/2, position.z + height);
         glEnd();
         
         glColor3f(0.5f, 1f, 0.6f);
         glBegin(GL_QUADS);
-        glVertex3f(length/2, -width/2, position.z + 0.8f);
+        glVertex3f(length/2, -width/2, position.z + height);
         glVertex3f(length/2, -width/2, position.z);
         glVertex3f(-length/2, -width/2, position.z);
-        glVertex3f(-length/2, -width/2, position.z + 0.8f);
+        glVertex3f(-length/2, -width/2, position.z + height);
         glEnd();   
 	}
 

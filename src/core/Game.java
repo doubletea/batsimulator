@@ -38,16 +38,28 @@ public class Game {
 		
 		bat = new VideoBat();
 		dot = new VideoDot();
-		
-		Line w1 = new Line(new Vector2f(-0.8f,-0.8f), new Vector2f(-0.8f,0.8f));
-    	wall1 = new VideoWall(w1);
     	
-    	Line w2 = new Line(new Vector2f(0.8f,-0.8f), new Vector2f(0.8f,0.8f));
-    	wall2 = new VideoWall(w2);
 		lines = Arrays.asList(
+				// ENTRANCE
 				new Line(new Vector2f(-0.8f,-0.8f), new Vector2f(-0.8f,0.8f)),
 				new Line(new Vector2f(0.4f,0.8f), new Vector2f(0.8f,-0.8f)),
-				new Line(new Vector2f(-0.6f,-0.8f), new Vector2f(0.8f,-0.8f))
+				new Line(new Vector2f(-0.6f,-0.8f), new Vector2f(0.8f,-0.8f)),
+				new Line(new Vector2f(-0.8f,0.8f), new Vector2f(-1.2f,1.2f)),
+				new Line(new Vector2f(0.8f,1.2f), new Vector2f(0.4f,0.8f)),
+				
+				// FIRST BLOCK
+				new Line(new Vector2f(0.4f,2.2f), new Vector2f(-0.4f,2.2f)),
+				new Line(new Vector2f(0.4f,2.2f), new Vector2f(0.4f,1.8f)),
+				new Line(new Vector2f(-0.4f,2.2f), new Vector2f(-0.4f,1.8f)),
+				new Line(new Vector2f(0.4f,1.8f), new Vector2f(-0.4f,1.8f)),
+				
+				// LEFT HALL
+				new Line(new Vector2f(-1.2f,1.2f), new Vector2f(-1.2f,2.8f))
+				
+				
+				
+				//new Line(new Vector2f(-0.4f,2.2f), new Vector2f(0.4f,2.2f))
+				
 		);
 		walls = new ArrayList<VideoWall>();
 		for (Line line:lines) {
@@ -66,13 +78,27 @@ public class Game {
 	public void update() {
 		bat.update(window, this);
 		camera.update(window, this);
+		
+		Vector3f batPos = bat.getPosition();
+		Vector2f bat2DPos = new Vector2f(batPos.x, batPos.y);
+		
+		
+		Intersection inter = CollisionDetector.closestPointLine(bat2DPos, lines);
+		
+		if (inter.distance < 0.1f){
+			camera.setVelocity(camera.getVelocity().mul(-.8f));
+			bat.setVelocity(bat.getVelocity().mul(-.8f));
+		}
+		
+		Vector3f dotPos = dot.getPosition();
+		dotPos.x = inter.intersection.x;
+		dotPos.y = inter.intersection.y;
+		dotPos.z = batPos.z;
+		ping.setPosition(dotPos);
 	}
 	
 	public void render() {
 		camera.render();
-		
-    	wall1.render();
-    	wall2.render();
     	
     	for (VideoWall wall: walls) {
     		wall.render();
@@ -80,14 +106,7 @@ public class Game {
 		bat.render();
 		dot.render();
 		
-		Vector3f batPos = bat.getPosition();
-		Vector2f bat2DPos = new Vector2f(batPos.x, batPos.y);
-		Intersection inter = CollisionDetector.closestPointLine(bat2DPos, lines);
-		Vector3f dotPos = dot.getPosition();
-		dotPos.x = inter.intersection.x;
-		dotPos.y = inter.intersection.y;
-		dotPos.z = batPos.z;
-		ping.setPosition(dotPos);
+
 	}
 	
 	public void destroy() {
