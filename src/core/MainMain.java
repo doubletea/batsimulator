@@ -1,9 +1,6 @@
 package core;
 
 import java.nio.FloatBuffer;
-import audio.AudioContext;
-import audio.AudioListener;
-import audio.AudioSource;
 import video.VideoBat;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.AL11.*;
@@ -18,16 +15,19 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLUtil;
+import org.urish.openal.ALException;
+import org.urish.openal.OpenAL;
 
 public class MainMain {
+	//audio 
+	private OpenAL openAL;
+	
 	// timing
 	private final int FRAME_RATE = 60;
 	private final double FRAME_DELAY = (long) Math.round(1000.0 / FRAME_RATE);
 	private double timeDeficit;
 	private boolean running;
 
-	// audio
-	private AudioContext context;
 
 	// video
 	public final static int WIDTH = 800;
@@ -37,21 +37,23 @@ public class MainMain {
 	//game
 	private Game game;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ALException {
 		new MainMain();
 	}
 
-	public MainMain() {
+	public MainMain() throws ALException {
 		init();
 		execute();
 		end();
 	}
 
-	private void init() {
+	private void init() throws ALException {
 		// audio init
-		context = AudioContext.createContext();
-		//alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
-		//alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+		try {
+			openAL = new OpenAL();
+		} catch (ALException e) {
+			e.printStackTrace();
+		}
 
 		// video init
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -83,12 +85,12 @@ public class MainMain {
 		// game logic init
 		running = true;
 		timeDeficit = 0;
-		game = new Game(window);
+		game = new Game(window, openAL);
 	}
 
 	private void end() {
 		// audio
-		context.destroy();
+		openAL.close();
 		// video
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
@@ -113,21 +115,18 @@ public class MainMain {
 		}
 	}
 	
-	private void loop() {
+	private void loop() throws ALException {
 		glfwPollEvents();
 		update();
 		render();
 	}
 	
-	private void update() {
+	private void update() throws ALException {
 		//game logic
 		game.update();
 	}
 	
-
-	
-	
-	private void render() {
+	private void render() throws ALException {
 		glClearColor(0, 0, 0, 0);
         
         game.render();
@@ -135,7 +134,7 @@ public class MainMain {
 		glfwSwapBuffers(window);
 	}
 
-	private void execute() {
+	private void execute() throws ALException {
 		long before = System.currentTimeMillis();
 		while (running) {
 			loop();

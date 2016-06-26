@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.urish.openal.ALException;
+import org.urish.openal.OpenAL;
+
 import static org.lwjgl.openal.AL10.*;
-import audio.AudioListener;
-import audio.AudioSource;
 import core.geom.CollisionDetector;
 import core.geom.Intersection;
 import core.geom.Line;
+import goodaudio.AudioSource;
 import video.Camera;
 import video.VideoBat;
 import video.VideoDot;
@@ -29,9 +31,10 @@ public class Game {
 	private List<Line> lines;
 	private AudioSource ping;
 	private VideoDot dot;
+	private OpenAL openAL;
 
 	
-	public Game(long window) {
+	public Game(long window, OpenAL openAL) throws ALException {
 		this.window = window;
 		
 		camera = new Camera();
@@ -54,8 +57,7 @@ public class Game {
 			walls.add(new VideoWall(line));
 		}
 		
-		ping = AudioSource.createFromVorbis("assets/sounds/submarine.ogg");
-		ping.setLooping(true);
+		ping = new AudioSource(openAL, "assets\\sounds\\BatSqueaksMono.wav");
 		ping.play();
 	}
 	
@@ -63,12 +65,25 @@ public class Game {
 		return bat;
 	}
 	
-	public void update() {
+	public void update() throws ALException {
 		bat.update(window, this);
 		camera.update(window, this);
+		
+		Vector3f batPos = bat.getPosition();
+		Vector2f bat2DPos = new Vector2f(batPos.x, batPos.y);
+		Intersection inter = CollisionDetector.closestPointLine(bat2DPos, lines);
+		Vector3f dotPos = dot.getPosition();
+		float oldX = dotPos.x - batPos.x;
+		float oldY = dotPos.y - batPos.y;
+		double batAng = Math.toRadians(bat.getRotation());
+		double batCos = Math.cos(batAng);
+		double batSin = Math.sin(batAng);
+		float newX = (float) (batCos * oldX - batSin * oldY);
+		float newZ = (float) (batSin * oldX + batCos * oldY);
+		ping.setPosition(newX, 0, newZ);
 	}
 	
-	public void render() {
+	public void render() throws ALException {
 		camera.render();
 		
     	wall1.render();
@@ -79,18 +94,9 @@ public class Game {
     	}
 		bat.render();
 		dot.render();
-		
-		Vector3f batPos = bat.getPosition();
-		Vector2f bat2DPos = new Vector2f(batPos.x, batPos.y);
-		Intersection inter = CollisionDetector.closestPointLine(bat2DPos, lines);
-		Vector3f dotPos = dot.getPosition();
-		dotPos.x = inter.intersection.x;
-		dotPos.y = inter.intersection.y;
-		dotPos.z = batPos.z;
-		ping.setPosition(dotPos);
 	}
 	
-	public void destroy() {
-		ping.destroy();
+	public void destroy() throws ALException {
+		ping.close();
 	}
 }
