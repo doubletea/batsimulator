@@ -92,27 +92,29 @@ public class Game {
 		Vector3f dotPos = dot.getPosition();
 		dotPos.x = inter.intersection.x;
 		dotPos.y = inter.intersection.y;
-		float oldX = batPos.x - dotPos.x;
-		float oldY = batPos.y - dotPos.y;
+		float oldX = dotPos.x - batPos.x;
+		float oldY = dotPos.y - batPos.y;
 		
 		if (inter.distance < 0.1f){
+			if (inter.distance < 0.05f){
+			}
 			Vector3f vec = new Vector3f(bat.getVelocity());
 			float oldMag = (float) Math.sqrt(oldX * oldX + oldY * oldY);
 			float xMag = oldX / oldMag;
 			float yMag = oldY / oldMag;
 			float dot = vec.dot(xMag, yMag, 0);
-			if (dot < 0) {
-				bat.setVelocity(bat.getVelocity().sub(xMag * dot, yMag * dot, 0));
+			if (dot > 0) {
+				bat.setVelocity(bat.getVelocity().sub(xMag * dot * 1.5f, yMag * dot * 1.5f, 0));
 			}
 		}
 		
 		
-		double batAng = Math.toRadians(bat.getRotation());
+		double batAng = Math.toRadians(-bat.getRotation());
 		double batCos = Math.cos(batAng);
 		double batSin = Math.sin(batAng);
 		float newX = (float) (batCos * oldX - batSin * oldY);
 		float newZ = (float) (batSin * oldX + batCos * oldY);
-		ping.setPosition(newX, 0, newZ);
+		ping.setPosition(-newZ, 0, -newX);
 	}
 	
 	public void render() throws ALException {
