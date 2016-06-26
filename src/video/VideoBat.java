@@ -60,6 +60,9 @@ public class VideoBat extends VideoObject{
 		if (glfwGetKey(window, GLFW_KEY_D) != GLFW_RELEASE) {
 			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.cos(angle - Math.PI/2), accel*(float)Math.sin(angle - Math.PI/2),0f)));
 		}
+		if (glfwGetKey(window, GLFW_KEY_S) != GLFW_RELEASE) {
+			setVelocity(getVelocity().add(new Vector3f(-accel*(float)Math.cos(angle), -accel*(float)Math.sin(angle),0f)));
+		}
 		
 		double batAng = Math.toRadians(rotation);
 	}
