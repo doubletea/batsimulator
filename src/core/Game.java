@@ -57,7 +57,11 @@ public class Game {
 				new Line(new Vector2f(0.4f,1.8f), new Vector2f(-0.4f,1.8f)),
 				
 				// LEFT HALL
-				new Line(new Vector2f(-1.2f,1.2f), new Vector2f(-1.2f,2.8f))
+				new Line(new Vector2f(-1.2f,1.2f), new Vector2f(-1.2f,2.8f)),
+				
+				// RIGHT HALL
+				new Line(new Vector2f(0.8f,1.2f), new Vector2f(2.4f,1.2f)),
+				new Line(new Vector2f(1.6f,1.2f), new Vector2f(1.6f,2.0f))
 				
 				
 				

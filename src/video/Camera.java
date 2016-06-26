@@ -23,7 +23,7 @@ import core.Game;
 import core.MainMain;
 
 public class Camera extends VideoObject{
-	float mouseSpeed = 0.005f;
+	private final float accel = 0.005f;
 	
 	public Camera(){
 		super();
@@ -88,7 +88,13 @@ public class Camera extends VideoObject{
 		double angle = Math.atan2(xpos1 - MainMain.WIDTH/2,ypos1 - MainMain.HEIGHT/2) - Math.PI;
 		
 		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
-			setVelocity(getVelocity().add(new Vector3f(0.02f*(float)Math.sin(angle),-0.02f*(float)Math.cos(angle),0f)));
+			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.sin(angle),-accel*(float)Math.cos(angle),0f)));
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) != GLFW_RELEASE) {
+			setVelocity(getVelocity().add(new Vector3f((float) (accel*(float)Math.cos(angle - Math.PI/2)), (float) (accel*(float)Math.sin(angle - Math.PI/2)),0f)));
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) != GLFW_RELEASE) {
+			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.cos(angle + Math.PI/2), accel*(float)Math.sin(angle + Math.PI/2),0f)));
 		}
 	}
 

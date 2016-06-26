@@ -12,6 +12,7 @@ import core.Game;
 import core.MainMain;
 
 public class VideoBat extends VideoObject{
+	private final float accel = 0.005f;
 	
 	public VideoBat(){
 		super();
@@ -51,7 +52,13 @@ public class VideoBat extends VideoObject{
 		ypos.rewind();
 		
 		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
-			setVelocity(getVelocity().add(new Vector3f(0.02f*(float)Math.cos(angle), 0.02f*(float)Math.sin(angle),0f)));
+			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.cos(angle), accel*(float)Math.sin(angle),0f)));
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) != GLFW_RELEASE) {
+			setVelocity(getVelocity().add(new Vector3f((float) (accel*(float)Math.cos(angle + Math.PI/2)), (float) (accel*(float)Math.sin(angle + Math.PI/2)),0f)));
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) != GLFW_RELEASE) {
+			setVelocity(getVelocity().add(new Vector3f(accel*(float)Math.cos(angle - Math.PI/2), accel*(float)Math.sin(angle - Math.PI/2),0f)));
 		}
 		
 		double batAng = Math.toRadians(rotation);
