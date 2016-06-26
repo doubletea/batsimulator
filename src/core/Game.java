@@ -18,6 +18,7 @@ import video.Camera;
 import video.VideoBat;
 import video.VideoDot;
 import video.VideoHP;
+import video.VideoMosquito;
 import video.VideoObject;
 import video.VideoWall;
 
@@ -34,14 +35,19 @@ public class Game {
 	private VideoDot nearDot;
 	private VideoDot straightDot;
 	private OpenAL openAL;
+	
+	private final float RANGE = 20f;
+
+	private VideoMosquito mosquito;
+
+	private AudioSource buzz;
 
 	private List<Line> generateRandom() {
 		List<Line> list = new ArrayList<Line>();
-		float range = 20f;
 		float sizeRange = 5f;
 		
 		for (int i = 0; i < 400; ++i){
-			Vector2f start = new Vector2f((float) Math.random() * range, (float) Math.random() * range);
+			Vector2f start = new Vector2f((float) Math.random() * RANGE, (float) Math.random() * RANGE);
 			
 			float size = (float) (sizeRange * Math.random() - sizeRange/2);
 			
@@ -100,8 +106,20 @@ public class Game {
 				
 		);*/
 		
-		
+		mosquito = new VideoMosquito();
+		Vector2f pos2D = new Vector2f();
+		boolean ok = false;
+		do{
+			pos2D.set((float)(RANGE * Math.random()), (float)(RANGE * Math.random()));
+			Intersection inter = CollisionDetector.closestPointLine(pos2D, lines);
+			if (inter.distance > 0.1f) {
+				ok = true;
+			}
+		} while(!ok);
+		mosquito.setPosition(new Vector3f(pos2D.x, pos2D.y, 0));
 				
+		
+		
 		walls = new ArrayList<VideoWall>();
 		for (Line line:lines) {
 			walls.add(new VideoWall(line));
@@ -112,6 +130,9 @@ public class Game {
 		
 		sonar = new AudioSource(openAL, "assets\\sounds\\submarineMono.wav");
 		sonar.play();
+		
+		buzz = new AudioSource(openAL, "assets\\sounds\\musquitoBuzzMono.wav");
+		buzz.play();
 	}
 	
 	public VideoBat getVideoBat() {
@@ -163,7 +184,15 @@ public class Game {
 			dotPos.y = inter.intersection.y;
 			sonar.play();
 			determineEffectiveSoundLocaiton(batPos, dotPos, sonar);
-
+		}
+		Vector3f mosquitoPos = mosquito.getPosition();
+		determineEffectiveSoundLocaiton(batPos, mosquitoPos, buzz);
+		float dx = batPos.x - mosquitoPos.x;
+		float dy = batPos.y - mosquitoPos.y;
+		float dis = (float) Math.sqrt(dx * dx + dy * dy);
+		if (dis < 0.1f) {
+			MainMain.running = false;
+			System.out.println("You win!");
 		}
 	}
 	
@@ -188,6 +217,8 @@ public class Game {
     	for (VideoWall wall: walls) {
     		wall.render();
     	}
+    	mosquito.render();
+    	
 		bat.render();
 
 		hp.render();
@@ -198,5 +229,7 @@ public class Game {
 	
 	public void destroy() throws ALException {
 		screech.close();
+		buzz.close();
+		sonar.close();
 	}
 }

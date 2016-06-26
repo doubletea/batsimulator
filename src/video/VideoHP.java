@@ -44,6 +44,7 @@ public class VideoHP extends VideoObject{
 		
 		if (this.HP <= 0){
 			MainMain.running = false;
+			System.out.println("You lose!");
 		}
 	}
 
