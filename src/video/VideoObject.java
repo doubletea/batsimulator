@@ -9,25 +9,62 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 
 import org.joml.Vector3f;
 
-public class VideoObject {
+import core.Game;
+
+public abstract class VideoObject {
 	protected Vector3f position;
 	protected float rotation;
 	protected Vector3f velocity;
 	
 	protected VideoObject(){
 		this.position = new Vector3f();
-		rotation = 0.0f;
+		setRotation(0.0f);
 		this.velocity = new Vector3f();
 	}
 	
-	protected void prerender(){
+	protected void updatePhysics() {
+		getPosition().add(getVelocity());
+		getVelocity().mul(0.9f);
+	}
+	
+	public void update(long window, Game game) {
+		updatePhysics();
+		coreUpdate(window, game);
+	}
+	
+	protected abstract void coreUpdate(long window, Game game);
+	
+	protected void preRender(){
 		glLoadIdentity();
-		
-		glTranslatef(position.x, position.y, position.z);
-		glRotatef(rotation,0.0f,0.0f,1.0f); //  rotate around center
-		
-		
-		
+		glTranslatef(getPosition().x, getPosition().y, getPosition().z);
+		glRotatef(getRotation(),0.0f,0.0f,1.0f); //  rotate around center
+	}
+	
+	protected abstract void coreRender();
+	
+	protected void postRender(){
+	}
+	
+	public void render() {
+		preRender();
+		coreRender();
+		postRender();
+	}
+
+	public Vector3f getPosition() {
+		return position;
+	}
+
+	public float getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
+	}
+
+	public Vector3f getVelocity() {
+		return velocity;
 	}
 	
 }
