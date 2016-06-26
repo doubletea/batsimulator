@@ -23,9 +23,10 @@ public class VideoObject {
 	protected void prerender(){
 		glLoadIdentity();
 		
+		glTranslatef(position.x, position.y, position.z);
 		glRotatef(rotation,0.0f,0.0f,1.0f); //  rotate around center
 		
-		glTranslatef(position.x, position.y, position.z);
+		
 		
 	}
 	

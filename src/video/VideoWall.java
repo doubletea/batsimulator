@@ -21,23 +21,21 @@ public class VideoWall extends VideoObject{
 	public VideoWall(Line line){
 		super();
 		this.position = new Vector3f((line.start.x+line.end.x)/2,(line.start.y+line.end.y)/2, 0.0f);
-		this.rotation = (float) Math.atan2(line.start.x-line.end.x,line.start.y-line.end.y);
+		this.rotation = (float) Math.atan2(line.start.y-line.end.y,line.start.x-line.end.x);
+		this.length = line.start.distance(line.end);
 	}
 	
 	public void render(){
 		super.prerender();
 		
-		Vector3f pointA = new Vector3f(position.x + (float)(length/2*Math.cos(rotation)), position.y + (float)(length/2*Math.sin(rotation)), position.z);
-		
-		Vector3f pointC = new Vector3f(pointA.x + (float)(width/2*Math.cos(Math.PI/2-rotation)), pointA.y - (float)(width/2*Math.sin(Math.PI/2-rotation)), position.z);
 		
     	glColor3f(0, 1, 0);
     	
         glBegin(GL_QUADS);
-        glVertex3f(pointC.x, pointC.y, position.z);
-        glVertex3f(pointC.y , pointC.x, position.z);
-        glVertex3f(-pointC.x , -pointC.y, position.z);
-        glVertex3f(-pointC.y, -pointC.x, position.z);
+        glVertex3f(width/2, length/2, position.z);
+        glVertex3f(width/2 ,-length/2, position.z);
+        glVertex3f(-width/2 ,-length/2, position.z);
+        glVertex3f(-width/2, length/2, position.z);
         glEnd();
 	}
 
