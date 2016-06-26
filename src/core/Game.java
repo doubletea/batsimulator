@@ -96,10 +96,14 @@ public class Game {
 		float oldY = batPos.y - dotPos.y;
 		
 		if (inter.distance < 0.1f){
-			
-			
-			camera.setVelocity(camera.getVelocity().mul(-.8f));
-			bat.setVelocity(bat.getVelocity().mul(-.8f));
+			Vector3f vec = new Vector3f(bat.getVelocity());
+			float oldMag = (float) Math.sqrt(oldX * oldX + oldY * oldY);
+			float xMag = oldX / oldMag;
+			float yMag = oldY / oldMag;
+			float dot = vec.dot(xMag, yMag, 0);
+			if (dot < 0) {
+				bat.setVelocity(bat.getVelocity().sub(xMag * dot, yMag * dot, 0));
+			}
 		}
 		
 		
