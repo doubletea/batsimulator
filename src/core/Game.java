@@ -35,6 +35,30 @@ public class Game {
 	private VideoDot straightDot;
 	private OpenAL openAL;
 
+	private List<Line> generateRandom() {
+		List<Line> list = new ArrayList<Line>();
+		float range = 20f;
+		float sizeRange = 5f;
+		
+		for (int i = 0; i < 400; ++i){
+			Vector2f start = new Vector2f((float) Math.random() * range, (float) Math.random() * range);
+			
+			float size = (float) (sizeRange * Math.random() - sizeRange/2);
+			
+			Vector2f end;
+			if (i % 4 == 0){
+				end = new Vector2f((float) (start.x), (float) (start.y + size*Math.random()));
+			} else if (i % 5 == 0){
+				end = new Vector2f((float) (start.x + size*Math.random()), (float) (start.y));
+			}
+			else {
+				end = new Vector2f((float) (start.x + size*Math.random()), (float) (start.y + size*Math.random()));
+			}
+			list.add(new Line(start, end));
+		}
+		
+		return list;
+	}
 	
 	public Game(long window, OpenAL openAL) throws ALException {
 		this.window = window;
@@ -45,9 +69,11 @@ public class Game {
 		nearDot = new VideoDot(new Vector3f(1f, 1f, 1f));
 		straightDot = new VideoDot(new Vector3f(1f, 1f, 0f));
     	
-		lines = Arrays.asList(
+		lines = generateRandom();
+		/*
+				Arrays.asList(
 				// ENTRANCE
-				new Line(new Vector2f(-0.8f,-0.8f), new Vector2f(-0.8f,0.8f)),
+				new Line(new Vector2f(-1.8f,-0.8f), new Vector2f(-0.8f,0.8f)),
 				new Line(new Vector2f(0.4f,0.8f), new Vector2f(0.8f,-0.8f)),
 				new Line(new Vector2f(-0.6f,-0.8f), new Vector2f(0.8f,-0.8f)),
 				new Line(new Vector2f(-0.8f,0.8f), new Vector2f(-1.2f,1.2f)),
@@ -66,11 +92,12 @@ public class Game {
 				new Line(new Vector2f(0.8f,1.2f), new Vector2f(2.4f,1.2f)),
 				new Line(new Vector2f(1.6f,1.2f), new Vector2f(1.6f,2.0f))
 				
-				
-				
 				//new Line(new Vector2f(-0.4f,2.2f), new Vector2f(0.4f,2.2f))
 				
 		);
+		*/
+		
+				
 		walls = new ArrayList<VideoWall>();
 		for (Line line:lines) {
 			walls.add(new VideoWall(line));
