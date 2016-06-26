@@ -54,7 +54,7 @@ public class Game {
 			else {
 				end = new Vector2f((float) (start.x + size*Math.random()), (float) (start.y + size*Math.random()));
 			}
-			list.add(new Line(start, end));
+			list.add(new Line(start.mul(3), end.mul(3)));
 		}
 		
 		return list;
@@ -70,8 +70,8 @@ public class Game {
 		straightDot = new VideoDot(new Vector3f(1f, 1f, 0f));
     	
 		lines = generateRandom();
-		/*
-				Arrays.asList(
+		
+				/*Arrays.asList(
 				// ENTRANCE
 				new Line(new Vector2f(-1.8f,-0.8f), new Vector2f(-0.8f,0.8f)),
 				new Line(new Vector2f(0.4f,0.8f), new Vector2f(0.8f,-0.8f)),
@@ -94,8 +94,8 @@ public class Game {
 				
 				//new Line(new Vector2f(-0.4f,2.2f), new Vector2f(0.4f,2.2f))
 				
-		);
-		*/
+		);*/
+		
 		
 				
 		walls = new ArrayList<VideoWall>();
@@ -143,18 +143,21 @@ public class Game {
 
 		determineEffectiveSoundLocaiton(batPos, dotPos, screech);
 		
-		float maxDis = 3;
+		float maxDis = 5;
 		inter = CollisionDetector.closestLineLine(new Line(bat2DPos, bat2DPos.add((float)(maxDis * Math.cos(batAng)), (float)(maxDis * Math.sin(batAng)), new Vector2f())), lines);
 		if (inter.distance > maxDis) {
 			dotPos = straightDot.getPosition();
 			dotPos.x = Float.MAX_VALUE;
 			dotPos.y = Float.MAX_VALUE;
+			sonar.pause();
 		} else {
 			dotPos = straightDot.getPosition();
 			dotPos.x = inter.intersection.x;
 			dotPos.y = inter.intersection.y;
+			sonar.play();
+			determineEffectiveSoundLocaiton(batPos, dotPos, sonar);
+
 		}
-		determineEffectiveSoundLocaiton(batPos, dotPos, sonar);
 	}
 	
 	private void determineEffectiveSoundLocaiton(Vector3f batPos, Vector3f soundPos, AudioSource sound) throws ALException {

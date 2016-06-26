@@ -49,6 +49,7 @@ public class AudioSource {
 	public void play() throws ALException {
 		if (!playing) {
 			source.play();
+			playing = true;
 		}
 	}
 	
