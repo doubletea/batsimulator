@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 
 
 import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.joml.Vector3f;
 
@@ -35,7 +35,9 @@ public abstract class VideoObject {
 	protected abstract void coreUpdate(long window, Game game);
 	
 	protected void preRender(){
-		glLoadIdentity();
+		if (this instanceof Camera) return;
+		
+		glPushMatrix();
 		glTranslatef(getPosition().x, getPosition().y, getPosition().z);
 		glRotatef(getRotation(),0.0f,0.0f,1.0f); //  rotate around center
 	}
@@ -43,6 +45,8 @@ public abstract class VideoObject {
 	protected abstract void coreRender();
 	
 	protected void postRender(){
+		glPopMatrix();
+		
 	}
 	
 	public void render() {

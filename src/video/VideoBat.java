@@ -31,6 +31,12 @@ public class VideoBat extends VideoObject{
 		if (glfwGetKey(window, GLFW_KEY_A) != GLFW_RELEASE) {
 			position.x -= 0.1f;
 		}
+		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
+			position.y += 0.1f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) != GLFW_RELEASE) {
+			position.y -= 0.1f;
+		}
 		if (glfwGetKey(window, GLFW_KEY_Q) != GLFW_RELEASE) {
 			setRotation(getRotation() + 1f);
 		}

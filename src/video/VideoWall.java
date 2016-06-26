@@ -1,10 +1,6 @@
 package video;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.joml.Vector3f;
 
@@ -37,6 +33,17 @@ public class VideoWall extends VideoObject{
         glVertex3f(-length/2, -width/2, position.z);
         glVertex3f(length/2, -width/2, position.z);
         glEnd();
+        
+        glColor3f(1, 1f, 0.8f);
+        glBegin(GL_QUADS);
+        glVertex3f(length/2, width/2, position.z + 0.8f);
+        glVertex3f(length/2, width/2, position.z);
+        glVertex3f(-length/2, width/2, position.z);
+        glVertex3f(-length/2, width/2, position.z + 0.8f);
+        glEnd();
+        
+        
+        
 	}
 
 	@Override

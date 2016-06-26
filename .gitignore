@@ -12,3 +12,6 @@
 #testresources
 /test/*
 /bin/
+
+#logs
+*.log
