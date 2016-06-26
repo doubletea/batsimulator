@@ -24,7 +24,7 @@ public abstract class VideoObject {
 	
 	protected void updatePhysics() {
 		getPosition().add(getVelocity());
-		getVelocity().mul(0.9f);
+		getVelocity().mul(0.95f);
 	}
 	
 	public void update(long window, Game game) {
@@ -58,6 +58,10 @@ public abstract class VideoObject {
 	public Vector3f getPosition() {
 		return position;
 	}
+	
+	public void setPosition(Vector3f position) {
+		this.position = position;
+	}
 
 	public float getRotation() {
 		return rotation;
@@ -69,6 +73,10 @@ public abstract class VideoObject {
 
 	public Vector3f getVelocity() {
 		return velocity;
+	}
+	
+	public void setVelocity(Vector3f velocity) {
+		this.velocity = velocity;
 	}
 	
 }

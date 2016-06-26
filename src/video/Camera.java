@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 
+import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 import org.joml.Matrix4f;
@@ -19,21 +20,23 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import core.Game;
+import core.MainMain;
 
 public class Camera extends VideoObject{
-	
+	float mouseSpeed = 0.005f;
 	
 	public Camera(){
 		super();
-		this.position = new Vector3f(0f, 0f, -1.20f);
-		this.rotation = 0f;
+		setPosition(new Vector3f(0f, 0f, -1.8f));
+		setRotation(0f);
+		setVelocity(new Vector3f(0f, 0f, 0f));
+		
 	}
 	
 	private Matrix4f glhPerspectivef2(float fovyInDegrees, float aspectRatio,
             float znear, float zfar)
 	{
 		float ymax, xmax;
-		float temp, temp2, temp3, temp4;
 		ymax = (float) (znear * Math.tan(fovyInDegrees * Math.PI / 360.0));
 		//ymin = -ymax;
 		//xmin = -ymax * aspectRatio;
@@ -74,20 +77,25 @@ public class Camera extends VideoObject{
 
 	@Override
 	protected void coreUpdate(long window, Game game) {
-		if (glfwGetKey(window, GLFW_KEY_UP) != GLFW_RELEASE) {
-			position.x -= 0.1f*Math.sin(Math.toRadians(getRotation()));
-			position.y -= 0.1f*Math.cos(Math.toRadians(getRotation()));
-		}
-		if (glfwGetKey(window, GLFW_KEY_DOWN) != GLFW_RELEASE) {
-			position.x += 0.1f*Math.sin(Math.toRadians(getRotation()));
-			position.y += 0.1f*Math.cos(Math.toRadians(getRotation()));
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT) != GLFW_RELEASE) {
-			setRotation(getRotation() - 1f);
-		}
+		DoubleBuffer xpos = BufferUtils.createDoubleBuffer(1);
+		DoubleBuffer ypos = BufferUtils.createDoubleBuffer(1);
+		
+		glfwGetCursorPos(window, xpos, ypos);
+		
+		double xpos1 = xpos.get();
+		double ypos1 = ypos.get();
+		
+		double angle = Math.atan2(xpos1 - MainMain.WIDTH/2,ypos1 - MainMain.HEIGHT/2) - Math.PI;
+		
+		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
+			setVelocity(getVelocity().add(new Vector3f(0.02f*(float)Math.sin(angle),-0.02f*(float)Math.cos(angle),0f)));
 			
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) != GLFW_RELEASE) {
-			setRotation(getRotation() + 1f);
+			position.x += getVelocity().x;
+			position.y += getVelocity().y;
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) != GLFW_RELEASE) {
+			position.x -= 0.1f*Math.sin(angle);
+			position.y += 0.1f*Math.cos(angle);
 		}
 	}
 

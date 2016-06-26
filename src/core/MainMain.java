@@ -32,8 +32,8 @@ public class MainMain {
 	private AudioSource ping;
 
 	// video
-	private final int WIDTH = 800;
-	private final int HEIGHT = 600;
+	public final static int WIDTH = 800;
+	public final static int HEIGHT = 600;
 	private long window;
 	
 	//game
@@ -80,6 +80,8 @@ public class MainMain {
         // Make the window visible
         glfwShowWindow(window);
 		GL.createCapabilities();
+		
+		glEnable(GL_DEPTH_TEST);
         
 		// game logic init
 		running = true;
