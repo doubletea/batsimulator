@@ -38,21 +38,22 @@ public final class AudioMain {
 	private static void testPlayback() {
 		AudioListener listener = new AudioListener();
 		
-		AudioSource ping = AudioSource.createFromVorbis("assets/sounds/submarine.ogg");
+		AudioSource ping = AudioSource.createFromVorbis("assets/sounds/submarineMono.ogg");
 		ping.setLooping(true);
 		ping.play();
 		
 		Vector3f pos = new Vector3f();
+		float distance = 3000;
 		for (int n = 0; n < 1000; n++) {
 			int degrees = 15 * n % 360;
 			System.out.println(degrees);
 			double ang = degrees / 180.0 * Math.PI;
-			float distance = 3;
+			distance += n;
 			pos.x = (float) (distance * Math.sin(ang));
 			pos.z = (float) (distance * Math.cos(ang));
 			ping.setPosition(pos);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 			}
 		}

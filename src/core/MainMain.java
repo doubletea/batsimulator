@@ -1,15 +1,15 @@
 package core;
 
 import java.nio.FloatBuffer;
-
 import audio.AudioContext;
 import audio.AudioListener;
 import audio.AudioSource;
 import video.VideoBat;
+import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.AL11.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
-
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -28,8 +28,6 @@ public class MainMain {
 
 	// audio
 	private AudioContext context;
-	private AudioListener audioListener;
-	private AudioSource ping;
 
 	// video
 	public final static int WIDTH = 800;
@@ -52,9 +50,8 @@ public class MainMain {
 	private void init() {
 		// audio init
 		context = AudioContext.createContext();
-		audioListener = new AudioListener();
-		ping = AudioSource.createFromVorbis("assets/sounds/submarine.ogg");
-		ping.setLooping(true);
+		//alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
+		//alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
 
 		// video init
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -91,7 +88,6 @@ public class MainMain {
 
 	private void end() {
 		// audio
-		ping.destroy();
 		context.destroy();
 		// video
 		glfwTerminate();
@@ -126,10 +122,6 @@ public class MainMain {
 	private void update() {
 		//game logic
 		game.update();
-		VideoBat bat = game.getVideoBat();
-		audioListener.setPosition(bat.getPosition());
-		audioListener.setVelocity(bat.getVelocity());
-		//audioListener.setUp(up);
 	}
 	
 
@@ -144,7 +136,6 @@ public class MainMain {
 	}
 
 	private void execute() {
-		ping.play();
 		long before = System.currentTimeMillis();
 		while (running) {
 			loop();

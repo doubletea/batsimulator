@@ -89,13 +89,6 @@ public class Camera extends VideoObject{
 		
 		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
 			setVelocity(getVelocity().add(new Vector3f(0.02f*(float)Math.sin(angle),-0.02f*(float)Math.cos(angle),0f)));
-			
-			position.x += getVelocity().x;
-			position.y += getVelocity().y;
-		}
-		if (glfwGetKey(window, GLFW_KEY_S) != GLFW_RELEASE) {
-			position.x -= 0.1f*Math.sin(angle);
-			position.y += 0.1f*Math.cos(angle);
 		}
 	}
 

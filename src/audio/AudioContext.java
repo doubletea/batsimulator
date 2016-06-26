@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
@@ -70,7 +71,12 @@ public class AudioContext {
 		String defaultDeviceSpecifier = alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER);
 		System.out.println("Default device: " + defaultDeviceSpecifier);
 
-		long context = alcCreateContext(device, (IntBuffer)null);
+		
+		
+		//long context = alcCreateContext(device, (IntBuffer)null);
+		IntBuffer ib = BufferUtils.createIntBuffer(2);
+		ib.put(new int[]{ALC_MONO_SOURCES, 0}).rewind();
+		long context = alcCreateContext(device, ib);
 		alcMakeContextCurrent(context);
 		AL.createCapabilities(deviceCaps);
 

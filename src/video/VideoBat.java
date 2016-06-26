@@ -9,13 +9,16 @@ import java.nio.IntBuffer;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
+import audio.AudioListener;
 import core.Game;
 import core.MainMain;
 
 public class VideoBat extends VideoObject{
+	private AudioListener audioListener;
 	
 	public VideoBat(){
 		super();
+		audioListener = new AudioListener();
 	}
 	
 	@Override
@@ -51,21 +54,19 @@ public class VideoBat extends VideoObject{
 		xpos.rewind();
 		ypos.rewind();
 		
-		if (glfwGetKey(window, GLFW_KEY_D) != GLFW_RELEASE) {
-			position.x += 0.1f;
-		}
-		if (glfwGetKey(window, GLFW_KEY_A) != GLFW_RELEASE) {
-			position.x -= 0.1f;
-		}
 		if (glfwGetKey(window, GLFW_KEY_W) != GLFW_RELEASE) {
 			setVelocity(getVelocity().add(new Vector3f(0.02f*(float)Math.sin(angle),-0.02f*(float)Math.cos(angle),0f)));
-			
-			position.x += getVelocity().x;
-			position.y += getVelocity().y;
 		}
+			
 		if (glfwGetKey(window, GLFW_KEY_S) != GLFW_RELEASE) {
 			position.x += 0.1f*Math.sin(Math.toRadians(getRotation()-90));
 			position.y += 0.1f*Math.cos(Math.toRadians(getRotation()-90));
 		}
+		
+		audioListener.setPosition(position);
+		audioListener.setVelocity(velocity);
+		double batAng = Math.toRadians(rotation);
+		audioListener.setFacing((float)Math.sin(batAng), (float)Math.cos(batAng), 0);
+		audioListener.setUp(0, 0, 1);
 	}
 }
