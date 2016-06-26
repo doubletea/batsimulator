@@ -55,6 +55,22 @@ public class VideoWall extends VideoObject{
         glVertex3f(-length/2, -width/2, position.z);
         glVertex3f(-length/2, -width/2, position.z + height);
         glEnd();   
+        
+        glColor3f(1f, 1f, 0f);
+        glBegin(GL_QUADS);
+        glVertex3f(length/2, -width/2, position.z + height);
+        glVertex3f(length/2, -width/2, position.z);
+        glVertex3f(length/2, width/2, position.z);
+        glVertex3f(length/2, width/2, position.z + height);
+        glEnd();   
+        
+        glColor3f(0f, 1f, 1f);
+        glBegin(GL_QUADS);
+        glVertex3f(-length/2, width/2, position.z + height);
+        glVertex3f(-length/2, width/2, position.z);
+        glVertex3f(-length/2, -width/2, position.z);
+        glVertex3f(-length/2, -width/2, position.z + height);
+        glEnd();   
 	}
 
 	@Override

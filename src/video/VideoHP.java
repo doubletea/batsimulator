@@ -12,30 +12,33 @@ import core.Game;
 import core.MainMain;
 
 public class VideoHP extends VideoObject{
+	
+	private final float width = 0.02f;
 	private final float HPBase = 100f;
 	private float HP;
 	
 
 	public VideoHP(){
 		super();
-		this.position = new Vector3f(0f,-3f,0f);
+		this.position = new Vector3f(0f,0f,0.82f);
+		this.rotation = 0f;
 		HP = HPBase;
 	}
 	@Override
 	protected void coreUpdate(long window, Game game) {
 		Vector3f batPos = game.getVideoBat().getPosition();
 		position.x = batPos.x;
-		position.y = batPos.y;
+		position.y = batPos.y - 1.7f;
 	}
 
 	@Override
 	protected void coreRender() {
-    	glColor3f(0.3f, 0.5f, 0.8f);
+    	glColor3f(1f, 1f, 1f);
         glBegin(GL_QUADS);
-        glVertex3f(2f * HP/HPBase, 0.1f, 0f);
-        glVertex3f(2f * HP/HPBase, -0.1f, 0f);
-        glVertex3f(-2f * HP/HPBase, -0.1f, 0f);
-        glVertex3f(-2f * HP/HPBase, 0.1f, 0f);
+        glVertex3f(2f * HP/HPBase, width, 0f);
+        glVertex3f(2f * HP/HPBase, -width, 0f);
+        glVertex3f(-2f * HP/HPBase, -width, 0f);
+        glVertex3f(-2f * HP/HPBase, width, 0f);
         glEnd();
 		
 	}
