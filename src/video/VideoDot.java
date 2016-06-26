@@ -2,10 +2,17 @@ package video;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.joml.Vector3f;
+
 import core.Game;
 
 public class VideoDot extends VideoObject {
 	private final float height = 0.81f;
+	private Vector3f color;
+
+	public VideoDot(Vector3f color) {
+		this.color = color;
+	}
 	
 	@Override
 	protected void coreUpdate(long window, Game game) {
@@ -15,7 +22,7 @@ public class VideoDot extends VideoObject {
 
 	@Override
 	protected void coreRender() {
-		glColor3f(1, 1, 1);
+		glColor3f(color.x, color.y, color.z);
 		glBegin(GL_POLYGON);
 		int sides = 10;
 		double len = 0.05;

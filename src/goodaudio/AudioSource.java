@@ -14,10 +14,11 @@ import org.urish.openal.jna.AL;
 public class AudioSource {
 	private Source source;
 	private Vector3f positon;
+	private boolean playing;
 	public AudioSource(OpenAL openAL, String path) throws ALException {
 		source = null;
 		try {
-			source = openAL.createSource(new File("assets\\sounds\\BatSqueaksMono.wav"));
+			source = openAL.createSource(new File(path));
 		} catch (IOException | UnsupportedAudioFileException e) {
 			throw new ALException(e);
 		}
@@ -32,6 +33,7 @@ public class AudioSource {
 		source.setFloatParam(AL.AL_MAX_GAIN, 1);
 		source.setFloatParam(AL.AL_REFERENCE_DISTANCE, 0.1f);
 		source.setFloatParam(AL.AL_ROLLOFF_FACTOR, 1);
+		playing = false;
 	}
 	
 	public void setPosition(Vector3f position) throws ALException {
@@ -45,11 +47,20 @@ public class AudioSource {
 	}
 	
 	public void play() throws ALException {
-		source.play();
+		if (!playing) {
+			source.play();
+		}
 	}
 	
 	public void close() throws ALException {
 		source.stop();
 		source.close();
+	}
+
+	public void pause() throws ALException {
+		if (playing) {
+			playing = false;
+			source.pause();
+		}
 	}
 }
