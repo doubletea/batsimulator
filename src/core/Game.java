@@ -93,9 +93,8 @@ public class Game {
 		Vector3f dotPos = dot.getPosition();
 		dotPos.x = inter.intersection.x;
 		dotPos.y = inter.intersection.y;
-		
-		float oldX = dotPos.x - batPos.x;
-		float oldY = dotPos.y - batPos.y;
+		float oldX = batPos.x - dotPos.x;
+		float oldY = batPos.y - dotPos.y;
 		double batAng = Math.toRadians(bat.getRotation());
 		double batCos = Math.cos(batAng);
 		double batSin = Math.sin(batAng);
