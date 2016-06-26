@@ -35,16 +35,24 @@ public class Game {
 
 	private List<Line> generateRandom() {
 		List<Line> list = new ArrayList<Line>();
-		float range = 10f;
-		float sizeRange = 2f;
+		float range = 20f;
+		float sizeRange = 5f;
 		
-		for (int i = 0; i < 100; ++i){
+		for (int i = 0; i < 400; ++i){
 			Vector2f start = new Vector2f((float) Math.random() * range, (float) Math.random() * range);
 			
 			float size = (float) (sizeRange * Math.random() - sizeRange/2);
 			
-			Vector2f pointB = new Vector2f((float) (start.x + size*Math.random()), (float) (start.y + size*Math.random()));
-			list.add(new Line(start, pointB));
+			Vector2f end;
+			if (i % 4 == 0){
+				end = new Vector2f((float) (start.x), (float) (start.y + size*Math.random()));
+			} else if (i % 5 == 0){
+				end = new Vector2f((float) (start.x + size*Math.random()), (float) (start.y));
+			}
+			else {
+				end = new Vector2f((float) (start.x + size*Math.random()), (float) (start.y + size*Math.random()));
+			}
+			list.add(new Line(start, end));
 		}
 		
 		return list;
@@ -58,7 +66,8 @@ public class Game {
 		bat = new VideoBat();
 		dot = new VideoDot();
     	
-		lines = //generateRandom();
+		lines = generateRandom();
+		/*
 				Arrays.asList(
 				// ENTRANCE
 				new Line(new Vector2f(-1.8f,-0.8f), new Vector2f(-0.8f,0.8f)),
@@ -83,6 +92,7 @@ public class Game {
 				//new Line(new Vector2f(-0.4f,2.2f), new Vector2f(0.4f,2.2f))
 				
 		);
+		*/
 		
 				
 		walls = new ArrayList<VideoWall>();
