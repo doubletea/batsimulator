@@ -85,16 +85,20 @@ public class Game {
 		Vector2f bat2DPos = new Vector2f(batPos.x, batPos.y);
 		Intersection inter = CollisionDetector.closestPointLine(bat2DPos, lines);
 		
-		if (inter.distance < 0.1f){
-			camera.setVelocity(camera.getVelocity().mul(-.8f));
-			bat.setVelocity(bat.getVelocity().mul(-.8f));
-		}
-		
 		Vector3f dotPos = dot.getPosition();
 		dotPos.x = inter.intersection.x;
 		dotPos.y = inter.intersection.y;
 		float oldX = batPos.x - dotPos.x;
 		float oldY = batPos.y - dotPos.y;
+		
+		if (inter.distance < 0.1f){
+			
+			
+			camera.setVelocity(camera.getVelocity().mul(-.8f));
+			bat.setVelocity(bat.getVelocity().mul(-.8f));
+		}
+		
+		
 		double batAng = Math.toRadians(bat.getRotation());
 		double batCos = Math.cos(batAng);
 		double batSin = Math.sin(batAng);
