@@ -8,17 +8,13 @@ import java.nio.IntBuffer;
 
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
-
-import audio.AudioListener;
 import core.Game;
 import core.MainMain;
 
 public class VideoBat extends VideoObject{
-	private AudioListener audioListener;
 	
 	public VideoBat(){
 		super();
-		audioListener = new AudioListener();
 	}
 	
 	@Override
@@ -63,10 +59,6 @@ public class VideoBat extends VideoObject{
 			position.y += 0.1f*Math.cos(Math.toRadians(getRotation()-90));
 		}
 		
-		audioListener.setPosition(position);
-		audioListener.setVelocity(velocity);
 		double batAng = Math.toRadians(rotation);
-		audioListener.setFacing((float)Math.sin(batAng), (float)Math.cos(batAng), 0);
-		audioListener.setUp(0, 0, 1);
 	}
 }
